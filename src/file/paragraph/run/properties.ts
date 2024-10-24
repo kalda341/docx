@@ -12,6 +12,8 @@ import {
     XmlComponent,
 } from "@file/xml-components";
 import { PositiveUniversalMeasure, UniversalMeasure } from "@util/values";
+import { InsertedElement } from "@file/track-revision/track-revision-components/inserted-element";
+import { DeletedElement } from "@file/track-revision/track-revision-components/deleted-element";
 
 import { EmphasisMark, EmphasisMarkType } from "./emphasis-mark";
 import { CharacterSpacing, Color, Highlight, HighlightComplexScript } from "./formatting";
@@ -110,6 +112,8 @@ export interface IRunStylePropertiesOptions {
 
 export interface IRunPropertiesOptions extends IRunStylePropertiesOptions {
     readonly style?: string;
+    readonly trackedInsertion?: IChangedAttributesProperties;
+    readonly trackedDeletion?: IChangedAttributesProperties;
 }
 
 export interface IRunPropertiesChangeOptions extends IRunPropertiesOptions, IChangedAttributesProperties {}
@@ -318,6 +322,14 @@ export class RunProperties extends IgnoreIfEmptyXmlComponent {
 
         if (options.math) {
             this.push(new OnOffElement("w:oMath", options.math));
+        }
+
+        if (options.trackedInsertion) {
+            this.push(new InsertedElement(options.trackedInsertion));
+        }
+
+        if (options.trackedDeletion) {
+            this.push(new DeletedElement(options.trackedDeletion));
         }
     }
 

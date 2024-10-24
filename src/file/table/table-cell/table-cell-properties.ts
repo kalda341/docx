@@ -1,8 +1,5 @@
 import { VerticalAlign, VerticalAlignElement } from "@file/vertical-align";
 import { IgnoreIfEmptyXmlComponent } from "@file/xml-components";
-import { IChangedAttributesProperties } from "@file/track-revision/track-revision";
-import { InsertedElement } from "@file/track-revision/track-revision-components/inserted-element";
-import { DeletedElement } from "@file/track-revision/track-revision-components/deleted-element";
 
 import { IShadingAttributesProperties, Shading } from "../../shading";
 import { ITableCellMarginOptions, TableCellMargin, TableCellMarginElementType } from "../table-properties/table-cell-margin";
@@ -27,8 +24,6 @@ export interface ITableCellPropertiesOptions {
     readonly columnSpan?: number;
     readonly rowSpan?: number;
     readonly borders?: ITableCellBorders;
-    readonly trackedInsertion?: IChangedAttributesProperties;
-    readonly trackedDeletion?: IChangedAttributesProperties;
 }
 
 export class TableCellProperties extends IgnoreIfEmptyXmlComponent {
@@ -68,13 +63,6 @@ export class TableCellProperties extends IgnoreIfEmptyXmlComponent {
 
         if (options.verticalAlign) {
             this.root.push(new VerticalAlignElement(options.verticalAlign));
-        }
-
-        if (options.trackedInsertion) {
-            this.root.push(new InsertedElement(options.trackedInsertion));
-        }
-        if (options.trackedDeletion) {
-            this.root.push(new DeletedElement(options.trackedDeletion));
         }
     }
 }
