@@ -30,6 +30,9 @@
 import { IgnoreIfEmptyXmlComponent, OnOffElement } from "@file/xml-components";
 import { PositiveUniversalMeasure } from "@util/values";
 
+import { IChangedAttributesProperties } from "@file/track-revision/track-revision";
+import { InsertedElement } from "@file/track-revision/track-revision-components/inserted-element";
+import { DeletedElement } from "@file/track-revision/track-revision-components/deleted-element";
 import { HeightRule, TableRowHeight } from "./table-row-height";
 
 export interface ITableRowPropertiesOptions {
@@ -39,6 +42,8 @@ export interface ITableRowPropertiesOptions {
         readonly value: number | PositiveUniversalMeasure;
         readonly rule: (typeof HeightRule)[keyof typeof HeightRule];
     };
+    readonly trackedInsertion?: IChangedAttributesProperties;
+    readonly trackedDeletion?: IChangedAttributesProperties;
 }
 
 export class TableRowProperties extends IgnoreIfEmptyXmlComponent {
@@ -55,6 +60,13 @@ export class TableRowProperties extends IgnoreIfEmptyXmlComponent {
 
         if (options.height) {
             this.root.push(new TableRowHeight(options.height.value, options.height.rule));
+        }
+
+        if (options.trackedInsertion) {
+            this.root.push(new InsertedElement(options.trackedInsertion));
+        }
+        if (options.trackedDeletion) {
+            this.root.push(new DeletedElement(options.trackedDeletion));
         }
     }
 }
